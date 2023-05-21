@@ -29,7 +29,7 @@ router.post("/", async (req, res) => {
 				res.cookie("token", token, {
 						sameSite: "none",
 						secure: true,
-						httpOnly: true,
+						httpOnly: false,
 					})
 					.status(200)
 					.json(foundUser);
