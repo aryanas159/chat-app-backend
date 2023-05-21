@@ -120,3 +120,5 @@ wss.on("connection", (connection, req) => {
 	});
 	notifyAboutOnlinePeople();
 });
+
+module.exports = app;
