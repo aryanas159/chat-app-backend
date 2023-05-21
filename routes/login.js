@@ -8,14 +8,14 @@ router.post("/", async (req, res) => {
 	const { username, password } = req.body;
 	if (!username || !password) {
 		return res
-			.setHeader("Access-Control-Allow-Origin", "*")
+			.setHeader("Access-Control-Allow-Origin", "https://mern-chat-08hj.onrender.com")
 			.status(400)
 			.json({ "message": "username and password are required" });
 			
 	}
 	const foundUser = await User.findOne({ username });
 	if (!foundUser) {
-		return res.setHeader("Access-Control-Allow-Origin", "*").status(404).json({ "message": "User not found" });
+		return res.setHeader("Access-Control-Allow-Origin", "https://mern-chat-08hj.onrender.com").status(404).json({ "message": "User not found" });
 	}
 	const auth = await bcrypt.compare(password, foundUser.password);
 	if (auth) {
@@ -33,13 +33,13 @@ router.post("/", async (req, res) => {
 						secure: true,
 						httpOnly: false,
 					})
-					.setHeader("Access-Control-Allow-Origin", "*")
+					.setHeader("Access-Control-Allow-Origin", "https://mern-chat-08hj.onrender.com")
 					.status(200)
 					.json(foundUser);
 			}
 		);
 	} else {
-		res.setHeader("Access-Control-Allow-Origin", "*").status(401).json({ "message": "Incorrect password" });
+		res.setHeader("Access-Control-Allow-Origin", "https://mern-chat-08hj.onrender.com").status(401).json({ "message": "Incorrect password" });
 	}
 });
 
