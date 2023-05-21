@@ -40,7 +40,7 @@ mongoose.connection.once("open", () => {
 	app.listen(PORT, () => console.log(`server connected to port: ${PORT}`));
 });
 
-const wss = new ws.WebSocketServer({ port: 8089 }); //New WebSocket defined
+const wss = new ws.WebSocketServer({ port: 8086 }); //New WebSocket defined
 console.log(wss)
 wss.on("connection", (connection, req) => {
 	const notifyAboutOnlinePeople = () => {
