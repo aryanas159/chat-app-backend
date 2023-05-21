@@ -35,6 +35,10 @@ app.use("/people", require("./routes/people"));
 app.use("/logout", require("./routes/logout"));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
+app.get('/test', (req, res) => {
+	return res.json({'message': 'test'})
+})
+
 mongoose.connection.once("open", () => {
 	console.log("Connected to MongoDB");
 	app.listen(PORT, () => console.log(`server connected to port: ${PORT}`));
