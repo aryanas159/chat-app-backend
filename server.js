@@ -23,7 +23,7 @@ app.use(express.json()); // To work with JSON
 app.use(
 	cors({
 		credentials: true,
-		origin: process.env.ORIGIN_URL,
+		origin: "https://mern-chat-08hj.onrender.com",
 	})
 );
 app.use(cookieParser());
