@@ -6,11 +6,11 @@ router.get('/', async (req, res) => {
     if (token) {
         jwt.verify(token, process.env.JWT_TOKEN, {}, (err, data) => {
             if (err) throw err;
-            return res.status(200).json(data)
+            return res.setHeader("Access-Control-Allow-Origin", "https://mern-chat-08hj.onrender.com").status(200).json(data)
         })
     }
     else {
-        return res.status(404)
+        return res.setHeader("Access-Control-Allow-Origin", "https://mern-chat-08hj.onrender.com").status(404)
     }
 })
 module.exports = router;
