@@ -45,7 +45,6 @@ mongoose.connection.once("open", () => {
 });
 
 const wss = new ws.WebSocketServer({ port: 1234 }); //New WebSocket defined
-console.log(wss)
 wss.on("connection", (connection, req) => {
 	const notifyAboutOnlinePeople = () => {
 		[...wss.clients].forEach((client) => {
