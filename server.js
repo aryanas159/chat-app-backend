@@ -22,7 +22,7 @@ connectDB();
 app.use(express.json()); // To work with JSON
 app.use(
 	cors({
-		// credentials: true,
+		credentials: true,
 		origin: "https://mern-chat-08hj.onrender.com",
 	})
 );
