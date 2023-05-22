@@ -13,7 +13,7 @@ const mongoose = require("mongoose");
 const connectDB = require("./config/dbConnector");
 const Message = require("./models/Message");
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 80;
 const app = express();
 connectDB();
 
@@ -23,7 +23,7 @@ app.use(express.json()); // To work with JSON
 app.use(
 	cors({
 		credentials: true,
-		origin: "http://localhost:3000"
+		origin: process.env.ORIGIN_URL,
 	})
 );
 app.use(cookieParser());
@@ -35,16 +35,16 @@ app.use("/people", require("./routes/people"));
 app.use("/logout", require("./routes/logout"));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-app.get('/test', (req, res) => {
-	return res.json({'message': 'test'})
-})
+app.get("/test", (req, res) => {
+	return res.json({ "message": "test" });
+});
 
 mongoose.connection.once("open", () => {
 	console.log("Connected to MongoDB");
 	app.listen(PORT, () => console.log(`server connected to port: ${PORT}`));
 });
 
-const wss = new ws.WebSocketServer({ port: 1234 }); //New WebSocket defined
+const wss = new ws.WebSocketServer({ port: process.env.WEBSOCKET_PORT }); //New WebSocket defined
 wss.on("connection", (connection, req) => {
 	const notifyAboutOnlinePeople = () => {
 		[...wss.clients].forEach((client) => {
@@ -57,6 +57,33 @@ wss.on("connection", (connection, req) => {
 			);
 		});
 	};
+
+
+
+
+
+	connection.isAlive = true;
+
+	connection.timer = setInterval(() => {
+		connection.ping();
+		connection.deathTimer = setTimeout(() => {
+			connection.isAlive = false;
+			clearInterval(connection.timer);
+			connection.terminate();
+			notifyAboutOnlinePeople();
+			console.log("dead");
+		}, 1000);
+	}, 5000);
+
+	connection.on("pong", () => {
+		clearTimeout(connection.deathTimer);
+	});
+
+
+
+
+
+
 
 	const cookies = req.headers.cookie;
 	if (cookies) {
@@ -78,17 +105,17 @@ wss.on("connection", (connection, req) => {
 		if (messageData?.receipient && messageData?.sender) {
 			let fileName = messageData?.file?.name || null;
 			if (messageData?.file) {
-					const fileData = messageData.file;
-					const base64Code = fileData.data.split(";base64,").pop();
-					fs.writeFile(
-						path.join(__dirname, "uploads", fileName),
-						base64Code,
-						{ encoding: "base64" }, 
-						(err) => {
-							if (err) throw err;
-							console.log("file sent");
-						}
-					);
+				const fileData = messageData.file;
+				const base64Code = fileData.data.split(";base64,").pop();
+				fs.writeFile(
+					path.join(__dirname, "uploads", fileName),
+					base64Code,
+					{ encoding: "base64" },
+					(err) => {
+						if (err) throw err;
+						console.log("file sent");
+					}
+				);
 			}
 			const messageDoc = await Message.create({
 				sender: messageData.sender,
@@ -114,9 +141,9 @@ wss.on("connection", (connection, req) => {
 		}
 	});
 
-	connection.on("close", () => {
-		notifyAboutOnlinePeople();
-	});
+	// connection.on("close", () => {
+	// 	notifyAboutOnlinePeople();
+	// });
 	notifyAboutOnlinePeople();
 });
 
