@@ -13,7 +13,7 @@ const mongoose = require("mongoose");
 const connectDB = require("./config/dbConnector");
 const Message = require("./models/Message");
 
-const PORT = process.env.PORT || 22;
+const PORT = process.env.PORT || 80;
 const app = express();
 connectDB();
 
