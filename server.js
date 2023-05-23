@@ -54,13 +54,14 @@ app.get("/test", (req, res) => {
 
 mongoose.connection.once("open", () => {
 	console.log("Connected to MongoDB");
-	app.listen(PORT, () => console.log(`server connected to port: ${PORT}`));
 });
+const server  = app.listen(PORT, () => console.log(`server connected to port: ${PORT}`));
+
 const httpsServer = https.createServer(cred, app)
 httpsServer.listen(8443)
 
-const wss = new ws.WebSocketServer({ port: process.env.WEBSOCKET_PORT }); //New WebSocket defined
-wss.on("connection", (connection, req) => {
+const wss = new ws.WebSocketServer({ server }); //New WebSocket defined
+wss.on("connection", (connection, req) => { 
 	const notifyAboutOnlinePeople = () => {
 		[...wss.clients].forEach((client) => {
 			client.send(
