@@ -8,14 +8,14 @@ const ws = require("ws");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const mongoose = require("mongoose");
-const https = require("https")
+// const https = require("https")
 
-const key = fs.readFileSync(path.join(__dirname, 'private.key'))
-const cert = fs.readFileSync(path.join(__dirname, 'certificate.crt'))
-const cred = {
-	key,
-	cert
-}
+// const key = fs.readFileSync(path.join(__dirname, 'private.key'))
+// const cert = fs.readFileSync(path.join(__dirname, 'certificate.crt'))
+// const cred = {
+// 	key,
+// 	cert
+// }
 
 
 
@@ -52,13 +52,26 @@ app.get("/test", (req, res) => {
 	return res.json({ "message": "test" });
 });
 
+const buildPath = path.join(__dirname, '../chat-app-frontend/dist')
+app.use(express.static(buildPath))
+app.get("/*", (req, res) => {
+	res.sendFile(
+		path.join(buildPath, 'index.html'),
+		(err) => {
+			if (err) {
+				res.status(500).send(err)
+			}
+		}
+	)
+})
+
 mongoose.connection.once("open", () => {
 	console.log("Connected to MongoDB");
 });
 const server  = app.listen(PORT, () => console.log(`server connected to port: ${PORT}`));
 
-const httpsServer = https.createServer(cred, app)
-httpsServer.listen(8443)
+// const httpsServer = https.createServer(cred, app)
+// httpsServer.listen(8443)
 
 const wss = new ws.WebSocketServer({ server }); //New WebSocket defined
 wss.on("connection", (connection, req) => { 
