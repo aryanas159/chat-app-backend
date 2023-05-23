@@ -29,8 +29,6 @@ router.post("/", async (req, res) => {
 				if (err) throw err;
 				res.cookie("token", token, {
 						sameSite: "none",
-						secure: true,
-						httpOnly: false,
 					})
 					.status(200)
 					.json(foundUser);
