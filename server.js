@@ -8,14 +8,14 @@ const ws = require("ws");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const mongoose = require("mongoose");
-// const https = require("https")
+const https = require("https")
 
-// const key = fs.readFileSync(path.join(__dirname, 'private.key'))
-// const cert = fs.readFileSync(path.join(__dirname, 'certificate.crt'))
-// const cred = {
-// 	key,
-// 	cert
-// }
+const key = fs.readFileSync(path.join(__dirname, 'private.key'))
+const cert = fs.readFileSync(path.join(__dirname, 'certificate.crt'))
+const cred = {
+	key,
+	cert
+}
 
 
 
@@ -70,8 +70,8 @@ mongoose.connection.once("open", () => {
 });
 const server  = app.listen(PORT, () => console.log(`server connected to port: ${PORT}`));
 
-// const httpsServer = https.createServer(cred, app)
-// httpsServer.listen(8443)
+const httpsServer = https.createServer(cred, app)
+httpsServer.listen(8443)
 
 const wss = new ws.WebSocketServer({ server }); //New WebSocket defined
 wss.on("connection", (connection, req) => { 
