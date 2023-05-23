@@ -9,6 +9,11 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const mongoose = require("mongoose");
 
+const file = fs.readFileSync(path.join(__dirname, 'BC78B0C5B5C36848EB21B4700150F030.txt'))
+
+
+
+
 //Funtions and Models
 const connectDB = require("./config/dbConnector");
 const Message = require("./models/Message");
@@ -18,6 +23,10 @@ const app = express();
 connectDB();
 
 // app.use
+app.get( '/.well-known/pki-validation/BC78B0C5B5C36848EB21B4700150F030.txt', (req, res) => {
+	res.sendFile(path.join(__dirname, 'BC78B0C5B5C36848EB21B4700150F030.txt'))
+})
+
 
 app.use(express.json()); // To work with JSON
 app.use(
