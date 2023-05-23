@@ -8,8 +8,14 @@ const ws = require("ws");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const mongoose = require("mongoose");
+const https = require("https")
 
-const file = fs.readFileSync(path.join(__dirname, 'BC78B0C5B5C36848EB21B4700150F030.txt'))
+const key = fs.readFileSync(path.join(__dirname, 'private.key'))
+const cert = fs.readFileSync(path.join(__dirname, 'certificate.crt'))
+const cred = {
+	key,
+	cert
+}
 
 
 
@@ -23,9 +29,7 @@ const app = express();
 connectDB();
 
 // app.use
-app.get( '/.well-known/pki-validation/BC78B0C5B5C36848EB21B4700150F030.txt', (req, res) => {
-	res.sendFile(path.join(__dirname, 'BC78B0C5B5C36848EB21B4700150F030.txt'))
-})
+
 
 
 app.use(express.json()); // To work with JSON
@@ -52,6 +56,8 @@ mongoose.connection.once("open", () => {
 	console.log("Connected to MongoDB");
 	app.listen(PORT, () => console.log(`server connected to port: ${PORT}`));
 });
+const httpsServer = https.createServer(cred, app)
+httpsServer.listen(8443)
 
 const wss = new ws.WebSocketServer({ port: process.env.WEBSOCKET_PORT }); //New WebSocket defined
 wss.on("connection", (connection, req) => {
