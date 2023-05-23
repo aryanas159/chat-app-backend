@@ -4,6 +4,7 @@ const Message = require("../models/Message");
 const jwt = require("jsonwebtoken");
 
 router.get("/:id", async (req, res) => {
+	console.log("inside messages")
 	const id = req.params.id;
 	const token = req?.cookies?.token;
 	let ourId = "";
