@@ -66,17 +66,15 @@ const server = app.listen(PORT, () =>
 
 const httpsServer = https.createServer(cred, app);
 
-httpsServer.listen(8443, () => {
-	console.log("https listening")
-});
-const wss = new ws.WebSocketServer({ port:8080 }); //New WebSocket defined
+const wss = new ws.WebSocketServer({ server: httpsServer }); //New WebSocket defined
 
-httpsServer.on("upgrade", (request, socket, head) => {
-	console.log("upgrading")
-	wss.handleUpgrade(request, socket, head, (ws) => {
-		wss.emit("connection", ws, request);
-	});
-});
+
+// httpsServer.on("upgrade", (request, socket, head) => {
+// 	console.log("upgrading")
+// 	wss.handleUpgrade(request, socket, head, (ws) => {
+// 		wss.emit("connection", ws, request);
+// 	});
+// });
 
 
 wss.on("connection", (connection, req) => {
@@ -172,5 +170,8 @@ wss.on("connection", (connection, req) => {
 });
 
 
+httpsServer.listen(8443, () => {
+	console.log("https listening")
+});
 
 module.exports = app;
