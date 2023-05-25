@@ -160,12 +160,12 @@ wss.on("connection", (connection, req) => {
 	notifyAboutOnlinePeople();
 });
 
-httpsServer.on("upgrade", (request, socket, head) => {
-	console.log("upgrading")
-	wss.handleUpgrade(request, socket, head, (ws) => {
-		wss.emit("connection", ws, request);
-	});
-});
+// httpsServer.on("upgrade", (request, socket, head) => {
+// 	console.log("upgrading")
+// 	wss.handleUpgrade(request, socket, head, (ws) => {
+// 		wss.emit("connection", ws, request);
+// 	});
+// });
 
 httpsServer.listen(8443);
 module.exports = app;
