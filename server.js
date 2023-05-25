@@ -69,7 +69,7 @@ const httpsServer = https.createServer(cred, app);
 httpsServer.listen(8443, () => {
 	console.log("https listening")
 });
-const wss = new ws.WebSocketServer({ server: httpsServer, port:8080 }); //New WebSocket defined
+const wss = new ws.WebSocketServer({ server: httpsServer }); //New WebSocket defined
 wss.on("connection", (connection, req) => {
 	const notifyAboutOnlinePeople = () => {
 		[...wss.clients].forEach((client) => {
