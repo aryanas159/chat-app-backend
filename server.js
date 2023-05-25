@@ -67,7 +67,7 @@ const server = app.listen(PORT, () =>
 const httpsServer = https.createServer(cred, app);
 
 
-const wss = new ws.WebSocketServer({ noServer: true }); //New WebSocket defined
+const wss = new ws.WebSocketServer({ port: 8080 }); //New WebSocket defined
 wss.on("connection", (connection, req) => {
 	const notifyAboutOnlinePeople = () => {
 		[...wss.clients].forEach((client) => {
@@ -166,6 +166,6 @@ httpsServer.on("upgrade", (request, socket, head) => {
 		wss.emit("connection", ws, request);
 	});
 });
-wss.listen(8080);
+
 httpsServer.listen(8443);
 module.exports = app;
