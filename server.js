@@ -64,9 +64,9 @@ const server = app.listen(PORT, () =>
 	console.log(`server connected to port: ${PORT}`)
 );
 
-// const httpsServer = https.createServer(cred, app);
+const httpsServer = https.createServer(cred, app);
 
-const wss = new ws.WebSocketServer({ server: server }); //New WebSocket defined
+const wss = new ws.WebSocketServer({ server: httpsServer }); //New WebSocket defined
 
 
 // httpsServer.on("upgrade", (request, socket, head) => {
@@ -170,8 +170,8 @@ wss.on("connection", (connection, req) => {
 });
 
 
-// httpsServer.listen(8443, () => {
-// 	console.log("https listening")
-// });
+httpsServer.listen(8443, () => {
+	console.log("https listening")
+});
 
 module.exports = app;
