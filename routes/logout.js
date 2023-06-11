@@ -1,12 +1,14 @@
-const express = require('express')
-const router = express.Router()
-router.post('/', (req, res) => {
-    if (req?.cookies?.token) {
-        res.cookie('token', '', {
-            sameSite: "none",
-            secure: false,
-            httpOnly: false,
-        }).status(200).json({'message': 'Logout successful'})
-    }
-})
+const express = require("express");
+const router = express.Router();
+router.post("/", (req, res) => {
+	if (req?.cookies?.token) {
+		res.cookie("token", "", {
+				sameSite: "none",
+				secure: true,
+				httpOnly: false,
+			})
+			.status(200)
+			.json({ "message": "Logout successful" });
+	}
+});
 module.exports = router;
